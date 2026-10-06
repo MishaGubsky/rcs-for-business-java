@@ -24,7 +24,7 @@ import com.google.api.services.businesscommunications.v1.model.RcsBusinessMessag
 // import com.google.api.services.businesscommunications.v1.model.RcsBusinessMessagingAgentPhoneEntry;
 // import com.google.api.services.businesscommunications.v1.model.RcsBusinessMessagingLaunchQuestionnaire;
 import com.google.api.services.businesscommunications.v1.model.RcsBusinessMessagingAgent;
-// import com.google.api.services.businesscommunications.v1.model.RcsBusinessMessagingAgentWebEntry;
+import com.google.api.services.businesscommunications.v1.model.WebEntry;
 import java.time.Instant;
 import java.util.Collections;
 
@@ -49,19 +49,19 @@ public final class AgentFactory {
     agent.setColor("#CC000" + suffix.hashCode() % 10);
     agent.setLogoUri(logo);
     agent.setHeroUri(hero);
-   // agent.setTermsConditions(
-   //     new RcsBusinessMessagingAgentWebEntry().setLabel("TOS").setUri("https://rbm.google.com/tos-00" + suffix));
-   // agent.setPrivacy(
-     //   new RcsBusinessMessagingAgentWebEntry().setLabel("Privacy").setUri("https://rbm.google.com/privacy-00" + suffix));
+    agent.setTermsConditions(
+        new WebEntry().setLabel("TOS").setUri("https://rbm.google.com/tos-00" + suffix));
+    agent.setPrivacy(
+        new WebEntry().setLabel("Privacy").setUri("https://rbm.google.com/privacy-00" + suffix));
    // agent.setEmails(Collections.singletonList(
      //   new RcsBusinessMessagingAgentEmailEntry().setLabel("me").setAddress("user@domain.com" + suffix)));
-   // agent.setWebsites(Collections.singletonList(
-   //    new RcsBusinessMessagingAgentWebEntry().setLabel("me").setUri("https://rbm.google.com/web-00" + suffix)));
+    agent.setWebsites(Collections.singletonList(
+        new WebEntry().setLabel("me").setUri("https://rbm.google.com/web-00" + suffix)));
    // agent.setPhoneNumbers(Collections.singletonList(
      //   new RcsBusinessMessagingAgentPhoneEntry().setLabel("MSISDN")
        //     .setPhoneNumber(new Phone().setNumber("+1650996943" + suffix.hashCode() % 10))));
     agent.setBillingConfig(
-        new RcsBusinessMessagingAgentBillingConfig().setBillingCategory("BASIC_MESSAGE"));
+        new RcsBusinessMessagingAgentBillingConfig().setBillingCategory("CONVERSATIONAL"));
     agent.setAgentUseCase("PROMOTIONAL");
     agent.setHostingRegion("ASIA_PACIFIC");
     return agent;

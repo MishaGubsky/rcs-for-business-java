@@ -200,6 +200,25 @@ public class ManagementFlow {
       return;
     }
 
+    // Upload verification document.
+    if (getBooleanFlag("upload_verification_document")) {
+      String pdfPath = flags.get("pdf_path");
+      String source = flags.getOrDefault("attachment_source", "VERIFICATION_PAGE");
+      if (isNotBlank(pdfPath)) {
+        logger.info("Uploading verification document from path: " + pdfPath);
+        com.google.api.services.businesscommunications.v1.model.GoogleCommunicationsBusinesscommunicationsV1Attachment attachment =
+            api.uploadVerificationDocument(flags.get("agent_id"), pdfPath, source);
+        logger.info("Upload success! Created attachment details:");
+        logger.info("Name: " + attachment.getName());
+        logger.info("GcsUrl: " + attachment.getGcsUrl());
+        logger.info("ContentType: " + attachment.getContentType());
+        logger.info("SizeBytes: " + attachment.getSizeBytes());
+      } else {
+        logger.severe("pdf_path is required for upload_verification_document");
+      }
+      return;
+    }
+
     Agent agent = api.getAgent(flags.get("agent_id"));
     logger.info("Agent: " + agent);
 
@@ -226,13 +245,14 @@ public class ManagementFlow {
     List<String> regionIds = Collections.singletonList(
         flags.getOrDefault("region", TEST_LAUNCH_REGION_ID));
     if (getBooleanFlag("launch_agent")) {
-      Optional<RcsBusinessMessagingLaunchQuestionnaire> q = Optional.of(AgentFactory.createRbmQuestionnaire());
-      AgentLaunch launch = api.requestRbmAgentLaunch(agent.getName(), regionIds, q);
-      logger.info("RBM agent updated launch: " + launch);
+      // Optional<RcsBusinessMessagingLaunchQuestionnaire> q = Optional.of(AgentFactory.createRbmQuestionnaire());
+      // AgentLaunch launch = api.requestRbmAgentLaunch(agent.getName(), regionIds, q);
+      // logger.info("RBM agent updated launch: " + launch);
     } else if (getBooleanFlag("unlaunch_agent")) {
-      AgentLaunch updated = api.unlaunchRbmAgentLaunch(agent.getName(), regionIds);
-      logger.info("RBM agent updated launch: " + updated);
+      // AgentLaunch updated = api.unlaunchRbmAgentLaunch(agent.getName(), regionIds);
+      // logger.info("RBM agent updated launch: " + updated);
     }
+*/
 
     // Read agent verification.
     if (getBooleanFlag("get_agent_verification")) {
@@ -250,7 +270,6 @@ public class ManagementFlow {
       AgentVerification verification = api.unverify(agent.getName());
       logger.info("Unverification requested: " + verification);
     }
-*/
     ///////////////// RBM, Messaging API ////////////////////
 
     
